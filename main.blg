@@ -1,0 +1,18 @@
+[1] Config.pm:354> INFO - This is Biber 2.7
+[2] Config.pm:357> INFO - Logfile is 'main.blg'
+[102] biber-MSWIN32:303> INFO - === 
+[213] Biber.pm:359> INFO - Reading 'main.bcf'
+[491] Biber.pm:835> INFO - Found 34 citekeys in bib section 0
+[554] Biber.pm:3670> INFO - Processing section 0
+[626] Biber.pm:3840> INFO - Looking for bibtex format file 'eacl2017.bib' for section 0
+[652] bibtex.pm:1435> INFO - Decoding LaTeX character macros into UTF-8
+[687] bibtex.pm:1292> INFO - Found BibTeX data source 'eacl2017.bib'
+[1037] Utils.pm:164> WARN - BibTeX subsystem: C:\Users\jabrooke\AppData\Local\Temp\dgBfR9EpjQ\eacl2017.bib_5320.utf8, line 12, warning: 1 characters of junk seen at toplevel
+[1038] Utils.pm:164> WARN - BibTeX subsystem: C:\Users\jabrooke\AppData\Local\Temp\dgBfR9EpjQ\eacl2017.bib_5320.utf8, line 40, warning: 164 characters of junk seen at toplevel
+[1766] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[1766] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[1767] Biber.pm:3499> INFO - Sorting list 'nyt/global/' of type 'entry' with scheme 'nyt' and locale 'en-US'
+[1767] Biber.pm:3505> INFO - No sort tailoring available for locale 'en-US'
+[1887] bbl.pm:608> INFO - Writing 'main.bbl' with encoding 'UTF-8'
+[1916] bbl.pm:712> INFO - Output to main.bbl
+[1917] Biber.pm:109> INFO - WARNINGS: 2

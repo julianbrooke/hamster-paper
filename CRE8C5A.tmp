@@ -1,0 +1,256 @@
+\documentclass[output=paper
+,modfonts
+,nonflat]{langsci/langscibook} 
+\bibliography{eacl2017} 
+\input{localpackages.tex}
+\input{localhyphenation.tex}
+\input{localcommands.tex} 
+\usepackage{url}
+\usepackage{latexsym}
+\usepackage{tikz-dependency}
+\usepackage{color}
+\usepackage{newfloat}
+\usepackage{lipsum,adjustbox}
+\usepackage{multirow}% http://ctan.org/pkg/multirow
+\usepackage{hhline}% http://ctan.org/pkg/hhline
+\usepackage{graphicx}
+\usepackage{paralist}
+\usepackage{xspace}
+\usepackage{caption}
+\usepackage{booktabs}
+
+\newcommand\BibTeX{B{\sc ib}\TeX}
+
+\newcommand{\lex}[1]{\textit{#1}\xspace}
+
+\newcommand{\ngram}[1][]{$n$-gram{#1}\xspace}
+
+\newcommand{\mwetype}[1]{\texttt{#1}\xspace}
+\newcommand{\strongish}{\mwetype{strong}}
+\newcommand{\weak}{\mwetype{weak}}
+\newcommand{\hard}{\mwetype{hard}}
+\newcommand{\mixed}{\mwetype{mixed}}
+
+\newcommand{\gap}{$*$\xspace}
+\newcommand{\zp}{\phantom{0}}
+
+\newcommand{\figureref}[1]{Figure~\ref{#1}\xspace}
+\newcommand{\tableref}[1]{Table~\ref{#1}\xspace}
+\newcommand{\sectionref}[1]{Section~\ref{#1}\xspace}
+
+%\newcommand{\citep[1]}{\citepp{#1}}
+%\newcommand{\citet[1]}{\citepp{#1}}
+
+
+\DeclareFloatingEnvironment[fileext=lod]{diagram}
+
+\title{Semi-Automated Resolution of Inconsistency for a Harmonized Multiword Expression and Dependency Parse Annotation} 
+\author{%
+ Julian Brooke\affiliation{The University of Melbourne}\and 
+ King Chan\affiliation{The University of Melbourne}\lastand 
+ Timothy Baldwin \affiliation{The University of Melbourne}
+}
+% \chapterDOI{} %will be filled in at production
+
+% \epigram{}
+
+\abstract{
+This paper presents a methodology for identifying and resolving various kinds of inconsistency in the context of merging dependency and multiword expression (MWE) annotations, to generate a dependency treebank with comprehensive MWE annotations. Candidates for correction are identified using a variety of heuristics, including an entirely novel one which identifies violations of MWE constituency in the dependency tree, and resolved by arbitration with minimal human intervention. Using this technique, we identified and corrected several hundred errors across both parse and MWE annotations, representing changes to a significant percentage (well over 10\%) of the MWE instances in the joint corpus. Testing using using a standard MWE tagger shows a major improvement in performance relative to earlier versions.
+}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+The availability of gold-standard annotations is important for the training and evaluation of a wide variety of NLP tasks, including the evaluation of dependency parsers \citep{Buchholz:2006:CST:1596276.1596305}. In recent years, there has been a focus on multi-annotation of a single corpus, such as joint syntactic, semantic role, named entity, coreference and word sense annotation in Ontonotes \citep{Hovy+:2006} or constituency, semantic role, discourse, opinion, temporal, event and coreference (among others) annotation of the Manually Annotated Sub-Corpus of the ANC \citep{Ide+:2010}. As part of this, there has been an increased focus on harmonizing and merging existing annotated data sets as a means of extending the scope of reference corpora \citep{Ide:2007:GGF:1642059.1642060,Declerk08,SimiMB15}.  This effort sometimes presents an opportunity to fix conflicting annotations, a worthwhile endeavour since even a small number of errors in a gold-standard syntactic annotation can, for example, result in significant changes in downstream applications \citep{habash2007determining}. This paper presents the results of a harmonization effort for the overlapping STREUSLE annotation \citep{Schneider14} of multiword expressions (``MWEs'': \citet{Baldwin10}) and dependency parse structure in the English Web Treebank (``EWT'': \citet{EWT}), with the long-term goal of building reliable resources for joint MWE/syntactic parsing \citep{Constant16}.
+
+As part of merging these two sets of annotations, we use analysis of cross-annotation and type-level consistency to identify instances of potential annotation inconsistency, with an eye to improving the quality of the component and combined annotations. It is important to point out that our approach to identifying and handling inconsistencies does not involve re-annotating the corpus; instead we act as arbitrators, resolving inconsistency in only those cases where human intervention is necessary. Our three methods for identifying potentially problematic annotations are:
+\begin{compactitem}
+\item a cross-annotation heuristic that identifies MWE tokens whose parse structure is incompatible with the syntactic annotation of the MWE;
+\item a cross-type heuristic that identifies \ngram[s] with inconsistent token-level MWE annotations; and
+\item a cross-type, cross-annotation heuristic that identifies MWE types whose parse structure is inconsistent across its token occurrences.
+\end{compactitem}
+The first of these is specific to this harmonization process, and as far as we aware, entirely novel. The other two are adaptions of an approach to improving syntactic annotations proposed by \citet{Dickinson03}. After applying these heuristics and reviewing the candidates, we identified hundreds of errors in MWE annotation and about a hundred errors in the original syntactic annotations. We make available a tool that applies these fixes in the process of joining the two annotations into a single harmonized, corrected annotation, and release the harmonized annotations in the form of HAMSTER (the HArmonized Multiword and Syntactic TreE Resource): \url{https://github.com/eltimster/HAMSTER}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Related Work}
+\label{sec:relwork}
+
+Our long-term goal is in building reliable resources for joint MWE/syntactic parsing. Explicit modelling of MWEs has been shown to improve parser accuracy \citep{Nivre04,Finkel:2009:JPN:1620754.1620802,Korkontzelos:2010:RME:1857999.1858088,Green:2013:PMI:2464100.2464109,Vincze13,Candito14,Constant16}. Treatment of MWEs has typically involved parsing MWEs as single lexical units \citep{Nivre04,Eryigit:2011:MES:2206359.2206365,Fotopoulou14}, however this flattened, ``words with spaces'' \citep{Sag02} approach is inflexible in its coverage of MWEs where components have some level of flexibility.
+
+The English Web Treebank \citep{EWT} represents a gold-standard annotation effort over informal web text. The original syntactic constituency annotation of the corpus was based on hand-correcting the output of the Stanford Parser \citep{Manning+:2014}; for our purposes we have converted this into a dependency parse using the Stanford Typed Dependency converter \citep{StanfordDep}. We considered the use of the Universal Dependencies representation \citep{nivre2016universal}, however we noted that several aspects of that annotation (in particular the treatment of all prepositions as case markers dependent on their noun) make it inappropriate for joint MWE/syntactic parsing since it results in large numbers of MWEs that are non-contiguous in their syntactic structure (despite being contiguous at the token-level). As such, the Stanford Typed Dependencies are the representation which has the greatest currency for joint MWE/syntactic parsing work \citep{Constant16}. 
+
+The STREUSLE corpus \citep{Schneider14} is based entirely on the Reviews subset of the EWT, and comprises of 3,812 sentences representing 55,579 tokens. The annotation was completed by six linguists who were native English speakers. Every sentence was assessed by at least two annotators, which resulted in an average inter-annotator F1 agreement of 0.7. The idiosyncratic nature of MWEs lends itself to challenges associated with their interpretation, and this was readily acknowledged by those involved in the development of the STREUSLE corpus \citep{Hollenstein16}. Two important aspects of the MWE annotation are that it includes both contiguous and non-contiguous MWEs (e.g.\ \lex{check \gap out}), and that it supports both weak and strong annotation; both of these are considered in scope for our inconsistency analysis. A variety of cues are employed to determine this associative strength. The primary factor relates to the degree in which the expression is semantically opaque and/or morphosyntactically idiosyncratic. An example of a strong MWE would be \lex{top notch}, as used in the sentence: \lex{We stayed at a \underline{top notch} hotel.} The semantics of this expression are not immediately predictable from the meanings of \lex{top} and \lex{notch}. On the other hand, the expression \lex{highly recommend} is considered to be a weak expression as it is largely compositional --- one can \lex{\underline{highly recommend} a product} --- as indicated by the presence of alternatives such as \lex{greatly recommend} which are also acceptable though less idiomatic. A total of 3,626 MWE instances were identified in STREUSLE, across 2,334 MWE types.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure*}
+\begin{center}
+\begin{adjustbox}{width=.8\textwidth}
+    \begin{dependency}[edge style={black!60!black,thick},
+        label style={thick}, scale=1.2]
+        \centering
+        \begin{deptext}[column sep=.7cm, row sep=.1ex]
+          \color{red}Deep \& \color{red}tissue \& massage \& helps \& with \& pain \& in \& neck \& and \& shoulders \\
+          \footnotesize{JJ} \& \footnotesize{NN} \& \footnotesize{NN} \& \footnotesize{VBZ} \& \footnotesize{IN} \& \footnotesize{NN} \& \footnotesize{IN} \& \footnotesize{NN} \& \footnotesize{CC} \& \footnotesize{NNS} \\
+        \end{deptext}
+        \depedge[edge unit distance=4ex, color=red]{3}{1}{amod}
+        \depedge[edge unit distance=3ex, color=red]{3}{2}{nn}
+        \depedge{4}{3}{nsubj}
+        \deproot[edge unit distance=2ex]{4}{root}
+        \depedge{4}{5}{prep}
+        \depedge{5}{6}{pobj}
+        \depedge{6}{7}{prep}
+        \depedge{7}{8}{pobj}
+        \depedge{8}{9}{cc}
+        \depedge{8}{10}{conj}
+        \wordgroup{1}{1}{2}{a0}
+    \end{dependency}
+\end{adjustbox}
+\end{center}
+\caption{An example where the arc count heuristic is breached. \lex{Deep tissue} has been labeled in the sentence here as an MWE in STREUSLE. \lex{Deep} and \lex{tissue} act as modifiers to \lex{massage}, a term that has not been included as part of the MWE.}
+\label{fig:arc-ex}
+\end{figure*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Other MWE-aware dependency treebanks include the various UD treebanks \citep{nivre2016universal}, the Prague Dependency Treebank \citep{bejvcek2013prague}, and others \citep{Nivre04,Eryigit:2011:MES:2206359.2206365,Candito14}. The representation of MWEs, and the scope of types covered by these treebanks, can vary significantly. For example, the internal syntactic structure may be flattened \citep{Nivre04}, or in the case of \citet{Candito14}, allow for distinctions in the granularity of syntactic representation for regular vs.\ irregular MWE types. 
+
+The identification of inconsistencies in annotation requires comparisons to be made between similar instances that are labeled differently. \citet{boyd-et-al:07a} employed an alignment-based approach to assess differences in the annotation of \ngram word sequences in order to establish the likelihood of error occurrence.  Other work in the syntactic inconsistency detection domain includes those related to POS tagging \citep{loftsson2009correcting,Eskin:2000:DEW:974305.974325,ma2001line} and parse structure \citep{ule2004unexpected,kato2010correcting}. \citet{Dickinson03} outline various approaches for detecting inconsistencies in parse structure within treebanks. 
+
+In general, inconsistencies associated with MWE annotation fall under two categories: (1) \lex{annotator error} (i.e.\ false positives and false negatives); and (2) ambiguity associated with the assessment of \lex{hard cases}. While annotation errors apply to situations where a correct label can be applied but is not done so, hard cases are those where the correct label is inherently difficult to assign, and can be particularly relevant to certain classes of MWEs. For example, there may be considerable differences in inter-annotator agreement associated with assessing the relative transparency and associative strength of a non-fixed MWE.  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Error Candidate Identification}
+
+\subsection{MWE Syntactic Constituency Conflicts}
+
+The hypothesis that drives our first analysis is that for nearly all MWE types, the component words of the MWE should be syntactically connected, which is to say that every word is a dependent of another word in the MWE, except one word which connects the MWE to the rest of the sentence (or the root of the sentence). We can realise this intuition by using an arc count heuristic: for each labeled MWE instance we count the number of incoming dependency arcs that are headed by a term outside the MWE, and if the count is greater than one, we flag it for manual analysis. \figureref{fig:arc-ex} gives an example where the arc count heuristic is breached since both terms of the MWE \lex{deep tissue} act as modifiers to the head noun that sits outside the MWE.
+
+\subsection{MWE Type Inconsistency}
+
+Our second analysis involves first collecting a list of all MWE types in the STREUSLE corpus, corresponding to lemmatized \ngram[s], possibly with gaps. We then match these \ngram[s] across the same corpus, and flag any MWE type which has at least one inconsistency with regards to the annotation. That is, we extract as candidates any MWE types where there were at least two occurrences of the corresponding \ngram in the corpus that were incompatible with respect to their annotation in STREUSLE, including discrepancies in weak/strong designation. For non-contiguous MWE types, matches containing up to 4 words of intervening context between the two parts of the MWE type were included as candidates for further assessment.
+
+\subsection{MWE Type Parse Inconsistency}
+
+The hypothesis that drives our third analysis is that we would generally expect the internal syntax of an MWE type to be consistent across all its instances.\footnote{Noting that we would not expect this to occur between MWE instances of a given combination of words, and non-MWE combinations of those same words.}  For each MWE type, we extracted the internal dependency structure of all its labeled instances, and flagged for further assessment any type for which the parse structure varied between at least two of those instances. Note that although this analysis is aimed at fixing parse errors, it makes direct use of the MWE annotation provided by STREUSLE to greatly limit the scope of error candidates to those which are most relevant to our interest.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Error Arbitration}
+
+Error arbitration was carried out by the authors (all native English speakers with experience in MWE identification), with at least two authors looking at each error candidate in most instances, and for certain difficult cases, the final annotation being based on discussion among all three authors. One advantage of our arbitration approach over a traditional token-based annotation was that we could enforce consistency across similar error candidates (e.g.\ \lex{disappointed with} and \lex{happy with}) and also investigate non-candidates to arrive at a consensus; where at all possible, our changes relied on precedents that already existed in the relevant annotation. 
+
+Arbitration for the MWE syntax conflicts usually involved identifying an error in one of the two annotations, and in most cases this was relatively obvious. For instance, in the candidate \lex{\ldots the usual lady called in sick hours earlier}, \lex{called in sick} was correctly labeled as an MWE, but the parse incorrectly includes \lex{sick} as a dependent of \lex{hours}, rather than \lex{called in}. An example of the opposite case is \lex{\ldots just to make the appointment \ldots}, where  \lex{make the} had been labeled as an MWE, an obvious error which was caught by our arc count heuristic. There were cases where our arc count heuristic was breached due to what we would view as a general inadequacy in the syntactic annotation, but we decided not to effect a change because the impact would be too far reaching; examples of this were certain discourse markers (e.g.\ \lex{as soon as}), and infinitives (e.g.\ \lex{have to complete} where the \lex{to} is considered a dependent of its verb rather than of the other term in the MWE \lex{have to}). The most interesting cases were a handful of non-contiguous MWEs where there was truly a discontinuity in the syntax between the two parts of the MWE, for instance \lex{no amount of \gap can}. This suggests a basic limitation in our heuristic, although the vast majority of MWEs did satisfy it.
+
+For the two type-level arbitrations, there were cases of inconsistency upheld by real usage differences (e.g.\ \lex{a little house} vs.\ \lex{a little tired}). We identified clear differences in usage first, and divided the MWE types into sets, excluding from further analysis non-MWE usages of MWE type \ngram[s]. For each consistent usage of an MWE type, the default position was to prefer the majority annotation across the set of instances, except when there were other candidates that were essentially equivalent: for instance, if we had relied on majority annotation for \lex{job \gap do} (e.g.\ \lex{the job that he did}) it would have been a different annotation than \lex{do \gap job} (e.g.\ \lex{do a good job}), so we considered these two together. We treated contiguous and non-contiguous versions of the same MWE type in the same manner.
+
+In the MWE type consistency arbitration, for cases where majority rules did not provide a clear answer and there was no overwhelming evidence for non-compositionality, we introduced a special internal label called \lex{hard}. These correspond to cases where the usage is consistent and the inconsistency seems to be a result of the difficulty of the annotation item (as discussed earlier in \sectionref{sec:relwork}), which extended also to our arbitration. Rather than enforce a specific annotation without strong evidence, or allow the inconsistency to remain when there is no usage justification for it, the corpus merging and correction tool gives the user the option to treat \lex{hard} annotated MWEs in varying ways: the annotation may be kept unchanged, removed, converted to weak, or covered to \lex{hard} for the purpose of excluding it from evaluation. Examples of hard cases include \lex{go back, go in, more than, talk to, speak to, thanks guys, not that great, pleased with, have \gap option, get \gap answer, fix \gap problem}. On a per capita basis, inconsistencies are more common for non-contiguous MWEs relative to their contiguous counterparts, and we suspect that this is partially due to their tendency to be weaker, in addition to the challenges involved in correctly discerning the two parts, which are sometimes at a significant distance from each other. 
+
+\tableref{tab:changes} provides a summary of changes to MWE annotation at the MWE type and token levels.  \lex{Mixed} refer to MWEs that are heterogeneous in the associative strength between terms in the MWE (between \weak and \strongish). Most of the changes in \tableref{tab:changes} (98\% of the types) were the result of our type consistency analysis. Almost half of the changes involved the use of the \hard label, but even excluding these (since only some of these annotations required actual changes in the final version of the corpus) our changes involve over 10\% of the MWE tokens in the corpus, and thus represent a significant improvement to the STREUSLE annotation.  
+
+Relative to the changes to the MWE annotation, the changes to the parse annotation were more modest, but still not insignificant: for 181 MWE tokens across 157 types, we identified and corrected a dependency and/or POS annotation error. The majority of these (61\%) were identified using the arc count heuristic. Note we applied the parse relevant heuristics after we fixed the MWE type consistency errors, ensuring that MWE annotations that were added were duly considered for parse errors.
+
+\begin{table*}[t!]
+\begin{tabular}{c c c c c c c c} % centered columns
+\toprule %inserts double horizontal lines
+&&\textbf{No MWE}&\textbf{Weak}&\textbf{Strong}&\textbf{Mixed}&\textbf{Hard}&\textbf{TOTAL}\\
+\midrule
+
+\multirow{4}{*}{\textbf{Token}}&\textbf{No MWE}  &--- &\zp 56 & 134 &\zp6& 148  &344\\
+&\textbf{Weak}                                   &33  &\zp--- & \zp22&\zp5& \zp46 &106\\
+&\textbf{Strong}                                 &41  &\zp43  &---  &\zp9&\zp70  &163\\
+&\textbf{Mixed}                                  &\zp0 &\zp\zp4 &\zp\zp5&14 &\zp\zp2 &\zp25\\
+\cmidrule{2-8}
+&\textbf{TOTAL}                                  &74  &103   &161  &34 &266   &638\\
+\midrule
+\multirow{4}{*}{\textbf{Type}}&\textbf{No MWE}   &--- &\zp31  &\zp72 &\zp5&\zp63  &171\\
+&\textbf{Weak}                                   &29  &---   &\zp13 &\zp4&\zp35  &\zp81\\
+&\textbf{Strong}                                 &32  &\zp28  &---  &\zp7&\zp43  &110\\
+&\textbf{Mixed}                                  &\zp0 &\zp\zp4 &\zp\zp4&\zp9&\zp\zp2 &\zp19\\
+\cmidrule{2-8}
+&\textbf{TOTAL}                                  &61  &\zp63  &\zp89 &25 &143   &381\\
+\bottomrule
+\end{tabular}%}
+\caption{Summary of changes to MWE annotation at the MWE type and token level} % title of Table
+\label{tab:changes} % is used to refer this table in the text
+\end{table*}
+%\begin{table*}[t!]
+%\resizebox{\columnwidth}{!}{%
+%\setlength\tabcolsep{1.0pt} 
+%\centering % used for centering table
+%\def\arraystretch{1.05}%
+%\begin{tabular}{c c c c c c c c} % centered columns
+%\toprule %inserts double horizontal lines
+%&&\textbf{No MWE}&\textbf{Weak}&\textbf{Strong}&\textbf{Mixed}&\textbf{Hard}&\textbf{TOTAL}\\
+%\midrule
+%\multirow{4}{*}{\textbf{Token}}&\textbf{No MWE}  &--- &\zp 56 & 134 &\zp6& 148  &344\\
+%&\textbf{Weak}                                   &33  &\zp--- & \zp22&\zp5& \zp46 &106\\
+%&\textbf{Strong}                                 &41  &\zp43  &---  &\zp9&\zp70  &163\\
+%&\textbf{Mixed}                                  &\zp0 &\zp\z4 &\zp\z5&14 &\zp\z2 &\zp25\\
+%\cmidrule{2-8}
+%&\textbf{TOTAL}                                  &74  &103   &161  &34 &266   &638\\
+%\midrule
+%\multirow{4}{*}{\textbf{Type}}&\textbf{No MWE}   &--- &\zp31  &\zp72 &\zp5&\zp63  &171\\
+%&\textbf{Weak}                                   &29  &---   &\zp13 &\zp4&\zp35  &\zp81\\
+%&\textbf{Strong}                                 &32  &\zp28  &---  &\zp7&\zp43  &110\\
+%&\textbf{Mixed}                                  &\zp0 &\zp\z4 &\zp\z4&\zp9&\zp\z2 &\zp19\\
+%\cmidrule{2-8}
+%&\textbf{TOTAL}                                  &61  &\zp63  &\zp89 &25 &143   &381\\
+%\bottomrule
+%\end{tabular}%}
+%\caption{Summary of changes to MWE annotation at the MWE type and token level} % title of Table
+%\label{tab:changes} % is used to refer this table in the text
+%\end{table*}
+
+\section{Experiments}
+
+In this section we investigate the effect of the HAMSTER MWE inconsistency fixes on the task of MWE expression identification. For this we use the AMALGr MWE identification tool of \newcite{Schneider14b}, which was developed on the initial release of the STRUESLE (called then the CMWE).\footnote{The key difference between the CMWE and STRUESLE is the inclusion of supersense tags. Though we hope to eventually include supersense information in the output of HAMSTER, supersenses are beyond the scope of the present work.} AMALGr is a supervised structured perception model which makes use of external resources including 10 MWE lexicons as well as Brown cluster information. For all our experiments we use the default settings from \newcite{Schneider14b}, including the original train/test splits and automatic part-of-speech tagging provide by the ARK TweetNLP POS tagger \cite{Owoputi13} trained on the all non-review sections of the English Web Treebank. We note that in contrast to typical experiments in NLP, here we are holding \textit{the approach} constant while varying the quality of the dataset, which provides an quantification of the extent to which errors in the dataset interfered with our ability to build or accurately evaluate models. Following \newcite{Schneider14b}, we report an F-score which is calculated based on links between words: a true positive occurs when two words appearing sequentially in an MWE are linked together as expected.
+
+There are two baselines in \tableref{tab:experiment1}: The first is the original performance of AMALGr as reported in \newcite{Schneider14b} using CMWE (version 1.0 of this annotation), and the second is its performance using STRUESLE (version 3.0). Note that these involve exactly the same texts: the difference between these two numbers reflect other fixes to this dataset that have happened in the years since its initial release. The difference between two is quite substantial, roughly 0.05 f-score.
+
+The rest of the table makes use of HAMSTERized versions of STRUESLE, which we refer to as simply HAMSTER. The options here mostly refer to our treatment of the \hard annotation, which must be removed to make use of AMALGr. \emph{-org} refers to a situation where we apply all fixes which result in the creation or removal of a standard STRUESLE label (\ie \weak and\strongish), but leave \hard annotations as they were in the original corpus. \emph{-notMWE} and \emph{-weak} create versions of the corpus where all hard labels have been mapped to either nothing (no MWE) or weak MWEs, respectively. Another option we consider is -noeval, which involved tweaking the AMALGr evaluation script to exclude particular annotations (in this case \hard) from evaluation altogether; that is, it does not matter what the model predicted for those words which are considered \hard. Finally,\emph{-test} and \emph{train} refers to the situation where we apply our fixes only to texts only in one of the the test or training sets, respectively; this gives us a sense of whether the improved performance of model in HAMSTER datasets is due only the removal of errors from the test set, or whether improving the consistency in training is playing a role as well.
+
+\begin{table*}[t!]
+\begin{tabular}{l c}
+\toprule
+\textbf{Dataset Version}&\textbf{F-score}\\
+\midrule
+CMWE \newcite{Schneider14b} & 0.594\\
+STRUESLE 3.0 & 0.646 \\
+\midrule
+HAMSTER-org & 0.691 \\ 
+HAMSTER-notMWE & 0.682 \\
+HAMSTER-weak & 0.694 \\
+HAMSTER-org-noeval & 0.702 \\
+HAMSTER-weak-noeval & 0.693\\
+HAMSTER-org-test & \\
+HAMSTER-org-train  &  \\
+
+\bottomrule
+\end{tabular}%}
+\caption{Summary of changes to MWE annotation at the MWE type and token level} % title of Table
+\label{tab:experiments1} % is used to refer this table in the text
+\end{table*}
+
+
+\section{Discussion}
+
+Our three heuristics are useful because they identify potential errors with a high degree of precision. For the MWE type consistency analysis 77\% of candidate types were problematic, and for parse type consistency, 79\%. For the arc count heuristic, 45\% of candidate types were ultimately changed: as mentioned earlier, some of the breaches involved systematic issues with annotation schema that we felt uncomfortable changing in isolation. By bringing these candidate instances to our attention, we were able to better focus our manual analysis effort, including in some cases looking across multiple related types, or even searching for specialist knowledge which could resolve ambiguities: for instance, in the example shown in \figureref{fig:arc-ex}, though a layperson without reference material may be unsure whether it is \lex{tissue} or \lex{massage} which is considered to be \lex{deep}, a quick online search indicates that the original EWT syntax is in error (\lex{deep} modifies \lex{tissue}).
+
+However, it would be an overstatement to claim to have fixed all (or even almost all) the errors in the corpus. For instance, our type consistency heuristics only work when there are multiple instances of the same type, yet it is worth noting that 82\% of the MWE types in the corpus are represented by a singleton instance. Our arc count heuristic can identify issues with singletons, but its scope is fairly limited. We cannot possibly identify missing annotations for types that were not annotated at least once. We might also miss certain kinds of systematic annotation errors, for instance those mentioned in \citet{de2015studying}, though that work focused on the use of \mwetype{mwe} dependency labels which are barely used in the EWT, one of the reasons a resource like STREUSLE is so useful.
+
+\section{Conclusion}
+
+We have proposed a methodology for merging multiword expression and dependency parse annotations, to generate HAMSTER: a gold-standard MWE-annotated dependency treebank with high consistency. The heuristics used to enforce consistency operate at the type- and cross-annotation level, and affected well over 10\% of the MWEs in the new resource. 
+
+%\bibliography{eacl2017}
+%\bibliographystyle{main}
+
+{\sloppy
+\printbibliography[heading=subbibliography,notkeyword=this]
+}
+\end{document}
