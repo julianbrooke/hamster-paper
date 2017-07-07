@@ -1232,8 +1232,47 @@
       \field{title}{Multiword expressions: A pain in the neck for {NLP}}
       \field{year}{2002}
     \endentry
+    \entry{Schneider14b}{article}{}
+      \name{author}{4}{uniquelist=2}{%
+        {{uniquename=0,hash=989a024048b92d0c851aa77e90dfa766}{%
+           family={Schneider},
+           familyi={S\bibinitperiod},
+           given={Nathan},
+           giveni={N\bibinitperiod}}}%
+        {{uniquename=0,hash=59cdd5d1b99e5df2bb2f232af3b29433}{%
+           family={Danchik},
+           familyi={D\bibinitperiod},
+           given={Emily},
+           giveni={E\bibinitperiod}}}%
+        {{uniquename=0,hash=dc0d6b065a6566cde5d6b93214be1b55}{%
+           family={Dyer},
+           familyi={D\bibinitperiod},
+           given={Chris},
+           giveni={C\bibinitperiod}}}%
+        {{uniquename=0,hash=a0c460aba9a2d1a450d5df136652f4db}{%
+           family={Smith},
+           familyi={S\bibinitperiod},
+           given={Noah\bibnamedelima A.},
+           giveni={N\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \strng{namehash}{1681b1700a1105e55a191bf6b24deba6}
+      \strng{fullhash}{681942999a93c9c8848acd5b3498aaba}
+      \strng{authornamehash}{1681b1700a1105e55a191bf6b24deba6}
+      \strng{authorfullhash}{681942999a93c9c8848acd5b3498aaba}
+      \field{sortinit}{S}
+      \field{sortinithash}{3c1547c63380458f8ca90e40ed14b83e}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Transactions of the Association for Computational Linguistics}
+      \field{title}{Discriminative lexical semantic segmentation with gaps: running the {MWE} gamut}
+      \field{volume}{2}
+      \field{year}{2014}
+      \field{pages}{193\bibrangedash 206}
+      \range{pages}{14}
+    \endentry
     \entry{Schneider14}{inproceedings}{}
-      \name{author}{7}{}{%
+      \name{author}{7}{uniquelist=2}{%
         {{uniquename=0,hash=989a024048b92d0c851aa77e90dfa766}{%
            family={Schneider},
            familyi={S\bibinitperiod},
@@ -1273,9 +1312,9 @@
       \list{location}{1}{%
         {Reykjavík, Iceland}%
       }
-      \strng{namehash}{5136ac936f42fd6ea7549374cd2c5d7a}
+      \strng{namehash}{c7653904b209f29e26e322e117918730}
       \strng{fullhash}{92efbad725868c2d782dfe8faba5d702}
-      \strng{authornamehash}{5136ac936f42fd6ea7549374cd2c5d7a}
+      \strng{authornamehash}{c7653904b209f29e26e322e117918730}
       \strng{authorfullhash}{92efbad725868c2d782dfe8faba5d702}
       \field{sortinit}{S}
       \field{sortinithash}{3c1547c63380458f8ca90e40ed14b83e}
