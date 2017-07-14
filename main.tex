@@ -72,7 +72,7 @@ As part of merging these two sets of annotations, we use analysis of cross-annot
 \item a cross-type heuristic that identifies \ngram[s] with inconsistent token-level MWE annotations; and
 \item a cross-type, cross-annotation heuristic that identifies MWE types whose parse structure is inconsistent across its token occurrences.
 \end{compactitem}
-The first of these is specific to this harmonization process, and as far as we aware, entirely novel. The other two are adaptions of an approach to improving syntactic annotations proposed by \citet{Dickinson03}. After applying these heuristics and reviewing the candidates, we identified hundreds of errors in MWE annotation and about a hundred errors in the original syntactic annotations. We make available a tool that applies these fixes in the process of joining the two annotations into a single harmonized, corrected annotation, and release the harmonized annotations in the form of HAMSTER (the HArmonized Multiword and Syntactic TreE Resource): \url{https://github.com/eltimster/HAMSTER}.
+The first of these is specific to this harmonization process, and as far as we aware, entirely novel. The other two are adaptions of an approach to improving syntactic annotations proposed by \citet{Dickinson03}. After applying these heuristics and reviewing the candidates, we identified hundreds of errors in MWE annotation and about a hundred errors in the original syntactic annotations. We make available a tool that applies these fixes in the process of joining the two annotations into a single harmonized, corrected annotation, and release the harmonized annotations in the form of HAMSTER (the HArmonized Multiword and Syntactic TreE Resource): \url{https://github.com/eltimster/HAMSTER}. We also show, using a standard MWE tagger \citep{\citet{Schneider14b}}, that the application of these and other corpus fixes has a major effect on MWE identification performance, with almost a quarter of the error originally assumed to be tagger error actually attributable to errors in the corpus.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -222,8 +222,10 @@ STRUESLE 3.0 & 0.646 \\
 HAMSTER-org & 0.691 \\ 
 HAMSTER-notMWE & 0.682 \\
 HAMSTER-weak & 0.694 \\
+\midrule
 HAMSTER-org-noeval & 0.702 \\
 HAMSTER-weak-noeval & 0.693\\
+\midrule
 HAMSTER-org-test & 0.671\\
 HAMSTER-org-train  & 0.657 \\
 
@@ -250,20 +252,22 @@ Our second round of experiments look at exact match recall with respect to vario
 \textbf{MWE types}& \textbf{N}& \textbf{Recall}& \textbf{N} & \textbf{Recall} \\
 \midrule
 All & 423 & 0.597 & 444 & 0.634\\
-Strong &  364 & 0.642 & 377 & 0.658\\
-Weak & 85& 0.223 & 96 & 0.644 \\
+\midrule
+Strong &  352 & 0.632 & 368 & 0.663\\
+Weak & 71& 0.240 & 76 & 0.355 \\
+\midrule
 In training & 178 & 0.777 & 208 & 0.801 \\ 
 Not in training & 247 & 0.474 & 238 & 0.494 \\
+\midrule
 Named entity (NE)& 52 & 0.735 & 52 & 0.716 \\
 Not NE, not in training & 195& 0.403 & 186& 0.439\\
-
 \bottomrule
 \end{tabular}%}
 \caption{AMALGr exact recall for different MWE subsets in original and HAMSTERized STRUESLE} % title of Table
 \label{tab:exp2} % is used to refer this table in the text
 \end{table*}
 
-In \tableref{tab:exp2} table AMALGr does better with the HAMSTER for most of the MWE subsets, the only striking difference occurs for the \weak tag, reflecting a disproportionate amount of inconsistency, enough that the model was apparently hesitant to apply it at all. Not only are MWEs with training instances tagged better after our fixes, but the set of such MWE tokens has noticeably increased with our fixes. There is a corresponding drop in those test instances without training data, which are clearly the most difficult to identify, particularly when named entities are excluded. The recall of named entities has actually dropped slightly, though since there are only about 50 of these in test set, this corresponds to a single missed example and is probably not meaningful. Though the rationale in terms of higher level semantics is clear, we can't help but wonder whether including NER as part of MWE identification may be unhelpful in terms of building an good MWE-identification systems. Here, we can see that among test-set-only MWEs, they stand out as being significantly easier than the rest.
+In \tableref{tab:exp2} table AMALGr does better with the HAMSTER for most of the MWE subsets, the most striking difference occurs for the \weak tag, reflecting a disproportionate amount of inconsistency, enough that the model was apparently hesitant to apply the tag at all. Not only are MWEs with training instances tagged better after our fixes, but the set of such MWE tokens has noticeably increased with our fixes. There is a corresponding drop in those test instances without training data, which are clearly the most difficult to identify, particularly when named entities are excluded. The recall of named entities has actually dropped slightly, though since there are only about 50 of these in test set, this corresponds to a single missed example and is probably not meaningful. Though the rationale in terms of higher-level semantics is clear, we wonder whether including NER as part of MWE identification may be unhelpful in terms of building an good MWE-identification systems. Here, we can see that among test-set-only MWEs, they stand out as being significantly easier than the rest.
 
 \section{Discussion}
 
@@ -271,7 +275,7 @@ Our three heuristics are useful because they identify potential errors with a hi
 
 However, it would be an overstatement to claim to have fixed all (or even almost all) the errors in the corpus. For instance, our type consistency heuristics only work when there are multiple instances of the same type, yet it is worth noting that 82\% of the MWE types in the corpus are represented by a singleton instance. Our arc count heuristic can identify issues with singletons, but its scope is fairly limited. We cannot possibly identify missing annotations for types that were not annotated at least once. We might also miss certain kinds of systematic annotation errors, for instance those mentioned in \citet{de2015studying}, though that work focused on the use of \mwetype{mwe} dependency labels which are barely used in the EWT, one of the reasons a resource like STREUSLE is so useful.
 
-Our experiments with the AMALGr tool show that our fixes result in a major improvement in MWE identification. One particularly striking result is the fact that the errors identified in the annotation since its original release account for about a quarter of all error (as measured by f-score) in the original model trained on it. Even supposing this error does not affect relative comparisons between systems (a dubious assumption), this is unacceptable simply in terms of the obfuscation it creates relative to the degree of absolute progress on the task. We believe, for annotation efforts in general and for MWEs in particular, we should move beyond a myoptic focus on getting sufficient annotator agreement in initial annotation--the agreement in the original CWME was fairly reasonable--and instead develop protocols for semi-automated, type-level inconsistency detection as a default step before an annotation is released. In this work, we have shown how bringing in other kinds of annotation done over the same corpus can facilitate such rigorous error correction, as part of the harmonization process.
+Our experiments with the AMALGr tool show that our fixes result in a major improvement in MWE identification. One particularly striking result is the fact that the errors identified in the annotation since its original release account for about a quarter of all error (as measured by f-score) in the original model trained on it. This error may affect relative comparisons between systems, and we should be skeptical of results previously drawn based on relatively small differences in MWE identification in earlier versions of the corpus, for instance \citep{Constant16}.  this is unacceptable simply in terms of the obfuscation relative to the degree of absolute progress on the task. We believe, for annotation efforts in general and for MWEs in particular, we should move beyond a myoptic focus on getting sufficient annotator agreement in initial annotation--the agreement in the original CWME was fairly reasonable--and instead develop protocols for semi-automated, type-level inconsistency detection as a default step before an annotation is released. In this work, we have shown how bringing in other kinds of annotation done over the same corpus can facilitate such rigorous error correction, as part of the harmonization process.
 
 
 \section{Conclusion}

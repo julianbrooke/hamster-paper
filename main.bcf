@@ -2157,3 +2157,76 @@
     <bcf:citekey order="8">EWT</bcf:citekey>
     <bcf:citekey order="9">Constant16</bcf:citekey>
     <bcf:citekey order="10">Dickinson03</bcf:citekey>
+    <bcf:citekey order="11">\citet {Schneider14b}</bcf:citekey>
+    <bcf:citekey order="12">Nivre04</bcf:citekey>
+    <bcf:citekey order="12">Finkel:2009:JPN:1620754.1620802</bcf:citekey>
+    <bcf:citekey order="12">Korkontzelos:2010:RME:1857999.1858088</bcf:citekey>
+    <bcf:citekey order="12">Green:2013:PMI:2464100.2464109</bcf:citekey>
+    <bcf:citekey order="12">Vincze13</bcf:citekey>
+    <bcf:citekey order="12">Candito14</bcf:citekey>
+    <bcf:citekey order="12">Constant16</bcf:citekey>
+    <bcf:citekey order="13">Nivre04</bcf:citekey>
+    <bcf:citekey order="13">Eryigit:2011:MES:2206359.2206365</bcf:citekey>
+    <bcf:citekey order="13">Fotopoulou14</bcf:citekey>
+    <bcf:citekey order="14">Sag02</bcf:citekey>
+    <bcf:citekey order="15">EWT</bcf:citekey>
+    <bcf:citekey order="16">Manning+:2014</bcf:citekey>
+    <bcf:citekey order="17">StanfordDep</bcf:citekey>
+    <bcf:citekey order="18">nivre2016universal</bcf:citekey>
+    <bcf:citekey order="19">Constant16</bcf:citekey>
+    <bcf:citekey order="20">Schneider14</bcf:citekey>
+    <bcf:citekey order="21">Hollenstein16</bcf:citekey>
+    <bcf:citekey order="22">nivre2016universal</bcf:citekey>
+    <bcf:citekey order="23">bejvcek2013prague</bcf:citekey>
+    <bcf:citekey order="24">Nivre04</bcf:citekey>
+    <bcf:citekey order="24">Eryigit:2011:MES:2206359.2206365</bcf:citekey>
+    <bcf:citekey order="24">Candito14</bcf:citekey>
+    <bcf:citekey order="25">Nivre04</bcf:citekey>
+    <bcf:citekey order="26">Candito14</bcf:citekey>
+    <bcf:citekey order="27">boyd-et-al:07a</bcf:citekey>
+    <bcf:citekey order="28">loftsson2009correcting</bcf:citekey>
+    <bcf:citekey order="28">Eskin:2000:DEW:974305.974325</bcf:citekey>
+    <bcf:citekey order="28">ma2001line</bcf:citekey>
+    <bcf:citekey order="29">ule2004unexpected</bcf:citekey>
+    <bcf:citekey order="29">kato2010correcting</bcf:citekey>
+    <bcf:citekey order="30">Dickinson03</bcf:citekey>
+    <bcf:citekey order="31">Schneider14b</bcf:citekey>
+    <bcf:citekey order="32">Schneider14b</bcf:citekey>
+    <bcf:citekey order="33">Owoputi13</bcf:citekey>
+    <bcf:citekey order="34">Schneider14b</bcf:citekey>
+    <bcf:citekey order="35">Schneider14b</bcf:citekey>
+    <bcf:citekey order="36">Schneider14b</bcf:citekey>
+    <bcf:citekey order="37">de2015studying</bcf:citekey>
+    <bcf:citekey order="38">Constant16</bcf:citekey>
+  </bcf:section>
+  <bcf:sortlist section="0" name="nyt/global/" type="entry" sortscheme="nyt" sortnamekeyscheme="global" labelprefix="">
+  <bcf:sorting>
+    <bcf:sort order="1">
+      <bcf:sortitem order="1">presort</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="2" final="1">
+      <bcf:sortitem order="1">sortkey</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="3">
+      <bcf:sortitem order="1">sortname</bcf:sortitem>
+      <bcf:sortitem order="2">author</bcf:sortitem>
+      <bcf:sortitem order="3">editor</bcf:sortitem>
+      <bcf:sortitem order="4">translator</bcf:sortitem>
+      <bcf:sortitem order="5">sorttitle</bcf:sortitem>
+      <bcf:sortitem order="6">title</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="4">
+      <bcf:sortitem order="1">sortyear</bcf:sortitem>
+      <bcf:sortitem order="2">year</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="5">
+      <bcf:sortitem order="1">sorttitle</bcf:sortitem>
+      <bcf:sortitem order="2">title</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="6">
+      <bcf:sortitem order="1">volume</bcf:sortitem>
+      <bcf:sortitem order="2">0</bcf:sortitem>
+    </bcf:sort>
+  </bcf:sorting>
+  </bcf:sortlist>
+</bcf:controlfile>
