@@ -1,19 +1,18 @@
-[0] Config.pm:354> INFO - This is Biber 2.7
-[3] Config.pm:357> INFO - Logfile is 'main.blg'
-[140] biber-MSWIN32:303> INFO - === 
-[295] Biber.pm:359> INFO - Reading 'main.bcf'
-[695] Biber.pm:835> INFO - Found 36 citekeys in bib section 0
-[758] Biber.pm:3670> INFO - Processing section 0
-[836] Biber.pm:3840> INFO - Looking for bibtex format file 'eacl2017.bib' for section 0
-[864] bibtex.pm:1435> INFO - Decoding LaTeX character macros into UTF-8
-[900] bibtex.pm:1292> INFO - Found BibTeX data source 'eacl2017.bib'
-[1289] Utils.pm:164> WARN - BibTeX subsystem: C:\Users\jabrooke\AppData\Local\Temp\2iMV2Tk3wi\eacl2017.bib_13908.utf8, line 12, warning: 1 characters of junk seen at toplevel
-[1289] Utils.pm:164> WARN - BibTeX subsystem: C:\Users\jabrooke\AppData\Local\Temp\2iMV2Tk3wi\eacl2017.bib_13908.utf8, line 40, warning: 164 characters of junk seen at toplevel
-[1296] Utils.pm:164> WARN - I didn't find a database entry for '\citet {Schneider14b}' (section 0)
-[1728] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[1728] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[1728] Biber.pm:3499> INFO - Sorting list 'nyt/global/' of type 'entry' with scheme 'nyt' and locale 'en-US'
-[1729] Biber.pm:3505> INFO - No sort tailoring available for locale 'en-US'
-[1844] bbl.pm:608> INFO - Writing 'main.bbl' with encoding 'UTF-8'
-[1871] bbl.pm:712> INFO - Output to main.bbl
-[1872] Biber.pm:109> INFO - WARNINGS: 3
+[1] Config.pm:354> INFO - This is Biber 2.7
+[2] Config.pm:357> INFO - Logfile is 'main.blg'
+[122] biber-MSWIN32:303> INFO - === 
+[290] Biber.pm:359> INFO - Reading 'main.bcf'
+[700] Biber.pm:835> INFO - Found 35 citekeys in bib section 0
+[764] Biber.pm:3670> INFO - Processing section 0
+[837] Biber.pm:3840> INFO - Looking for bibtex format file 'eacl2017.bib' for section 0
+[866] bibtex.pm:1435> INFO - Decoding LaTeX character macros into UTF-8
+[892] bibtex.pm:1292> INFO - Found BibTeX data source 'eacl2017.bib'
+[1157] Utils.pm:164> WARN - BibTeX subsystem: C:\Users\jabrooke\AppData\Local\Temp\S9RghbytMx\eacl2017.bib_2000.utf8, line 12, warning: 1 characters of junk seen at toplevel
+[1157] Utils.pm:164> WARN - BibTeX subsystem: C:\Users\jabrooke\AppData\Local\Temp\S9RghbytMx\eacl2017.bib_2000.utf8, line 40, warning: 164 characters of junk seen at toplevel
+[1649] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[1649] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[1650] Biber.pm:3499> INFO - Sorting list 'nyt/global/' of type 'entry' with scheme 'nyt' and locale 'en-US'
+[1650] Biber.pm:3505> INFO - No sort tailoring available for locale 'en-US'
+[1807] bbl.pm:608> INFO - Writing 'main.bbl' with encoding 'UTF-8'
+[1847] bbl.pm:712> INFO - Output to main.bbl
+[1848] Biber.pm:109> INFO - WARNINGS: 2

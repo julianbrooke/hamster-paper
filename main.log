@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (MiKTeX 2.9.6300) (preloaded format=xelatex 2017.5.20)  14 JUL 2017 16:53
+This is XeTeX, Version 3.14159265-2.6-0.99998 (MiKTeX 2.9.6300) (preloaded format=xelatex 2017.5.20)  18 JUL 2017 12:23
 entering extended mode
 **./main.tex
 (main.tex
@@ -3514,15 +3514,7 @@ Package biblatex Info: Automatic encoding selection.
 
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'main.bbl' found.
-(main.bbl
-
-Package biblatex Warning: The following entry could not be found
-(biblatex)                in the database:
-(biblatex)                \citet {Schneider14b}
-(biblatex)                Please verify the spelling and rerun
-(biblatex)                LaTeX afterwards.
-
-)
+(main.bbl)
 Package biblatex Info: Reference section=0 on input line 61.
 Package biblatex Info: Reference segment=0 on input line 61.
 Package caption Info: Begin \AtBeginDocument code.
@@ -3700,14 +3692,6 @@ Overfull \hbox (13.28171pt too wide) in paragraph at lines 135--136
 SLE
  []
 
-
-Overfull \vbox (10.2pt too high) has occurred while \output is active []
-
-\openout3 = `main.mw'.
-
- [5] (main.mw)
-\openout3 = `main.mw'.
-
 Requested font "[./langsci/fonts/LinLibertine_R_B.otf]/OT" at 9.0pt
  -> ./langsci/fonts/LinLibertine_R_B.otf
 Requested font "[./langsci/fonts/LinLibertine_RZ_B.otf]/OT" at 9.0pt
@@ -3791,6 +3775,14 @@ Requested font "lasy5" at 5.0pt
 Requested font "[./langsci/fonts/LinLibertine_R_B.otf]/OT:script=latn;language=DFLT;+liga;+pnum;+lnum;mapping=tex-text;"
  at 6.0pt
  -> ./langsci/fonts/LinLibertine_R_B.otf
+
+Overfull \vbox (10.2pt too high) has occurred while \output is active []
+
+\openout3 = `main.mw'.
+
+ [5] (main.mw)
+\openout3 = `main.mw'.
+
 \openout3 = `main.mw'.
 
  [6] (main.mw)
@@ -3835,9 +3827,19 @@ Overfull \vbox (10.2pt too high) has occurred while \output is active []
  [9] (main.mw)
 \openout3 = `main.mw'.
 
+
+! Undefined control sequence.
+l.245 ... of reviews, but often as singletons, \ie
+                                                   with a frequency of one. ...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
 \openout3 = `main.mw'.
 
- [10] (main.mw)
+[10] (main.mw)
 \openout3 = `main.mw'.
 
 
@@ -3898,10 +3900,10 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 ### simple group (level 1) entered at line 697 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 59674 strings out of 427869
- 1188326 string characters out of 3151901
- 1850988 words of memory out of 3000000
- 62720 multiletter control sequences out of 15000+200000
+ 59673 strings out of 427869
+ 1188316 string characters out of 3151901
+ 1850921 words of memory out of 3000000
+ 62719 multiletter control sequences out of 15000+200000
  11472 words of font info for 99 fonts, out of 3000000 for 9000
  1317 hyphenation exceptions out of 8191
  71i,15n,119p,10400b,26767s stack positions out of 5000i,500n,10000p,200000b,50000s

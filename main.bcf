@@ -2157,7 +2157,7 @@
     <bcf:citekey order="8">EWT</bcf:citekey>
     <bcf:citekey order="9">Constant16</bcf:citekey>
     <bcf:citekey order="10">Dickinson03</bcf:citekey>
-    <bcf:citekey order="11">\citet {Schneider14b}</bcf:citekey>
+    <bcf:citekey order="11">Schneider14b</bcf:citekey>
     <bcf:citekey order="12">Nivre04</bcf:citekey>
     <bcf:citekey order="12">Finkel:2009:JPN:1620754.1620802</bcf:citekey>
     <bcf:citekey order="12">Korkontzelos:2010:RME:1857999.1858088</bcf:citekey>
@@ -2197,7 +2197,6 @@
     <bcf:citekey order="35">Schneider14b</bcf:citekey>
     <bcf:citekey order="36">Schneider14b</bcf:citekey>
     <bcf:citekey order="37">de2015studying</bcf:citekey>
-    <bcf:citekey order="38">Constant16</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" name="nyt/global/" type="entry" sortscheme="nyt" sortnamekeyscheme="global" labelprefix="">
   <bcf:sorting>
