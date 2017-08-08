@@ -155,6 +155,7 @@ In the MWE type consistency arbitration, for cases where majority rules did not 
 Relative to the changes to the MWE annotation, the changes to the parse annotation were more modest, but still not insignificant: for 161 MWE tokens across 72 types, we identified and corrected a dependency and/or POS annotation error. The majority of these (67\%) were identified using the arc count heuristic. Note we applied the parse relevant heuristics after we fixed the MWE type consistency errors, ensuring that MWE annotations that were added were duly considered for parse errors.
 
 \begin{table*}[t!]
+\caption{Summary of changes to MWE annotation at the MWE type and token level} % title of Table
 \begin{tabular}{c c c c c c c c} % centered columns
 \toprule %inserts double horizontal lines
 &&\textbf{No MWE}&\textbf{Weak}&\textbf{Strong}&\textbf{Mixed}&\textbf{Hard}&\textbf{TOTAL}\\
@@ -175,7 +176,6 @@ Relative to the changes to the MWE annotation, the changes to the parse annotati
 &\textbf{TOTAL}                                  &67  &\zp63  &\zp90 &23 &144   &387\\
 \bottomrule
 \end{tabular}%}
-\caption{Summary of changes to MWE annotation at the MWE type and token level} % title of Table
 \label{tab:changes} % is used to refer this table in the text
 \end{table*}
 %\begin{table*}[t!]
@@ -212,6 +212,7 @@ In this section we investigate the effect of the HAMSTER MWE inconsistency fixes
 
 
 \begin{table*}[t!]
+\caption{AMALGr F-scores for various versions of MWE annotation of EWT Reviews} % title of Table
 \begin{tabular}{l c}
 \toprule
 \textbf{Dataset}&\textbf{F-score}\\
@@ -231,7 +232,6 @@ HAMSTER-original-train  & 0.657 \\
 
 \bottomrule
 \end{tabular}%}
-\caption{AMALGr F-scores for various versions of MWE annotation of EWT Reviews} % title of Table
 \label{tab:exp1} % is used to refer this table in the text
 \end{table*}
 
@@ -245,6 +245,7 @@ Our second round of experiments looks at exact match recall with respect to vari
 
 
 \begin{table*}[t!]
+\caption{AMALGr exact recall for different MWE subsets in original and HAMSTERized STRUESLE} % title of Table
 \begin{tabular}{l c c c c}
 \toprule
 &\multicolumn{2}{c}{\textbf{STRUESLE}} & \multicolumn{2}{c}{\textbf{HAMSTER}} \\
@@ -262,7 +263,6 @@ Named entity (NE)& \zp52 & 0.735 & \zp52 & 0.716 \\
 Not NE, not in training & 195& 0.403 & 186& 0.439\\
 \bottomrule
 \end{tabular}%}
-\caption{AMALGr exact recall for different MWE subsets in original and HAMSTERized STRUESLE} % title of Table
 \label{tab:exp2} % is used to refer this table in the text
 \end{table*}
 
@@ -274,7 +274,7 @@ Our three heuristics are useful because they identify potential errors with a hi
 
 However, it would be an overstatement to claim to have fixed all (or even almost all) the errors in the corpus. For instance, our type consistency heuristics only work when there are multiple instances of the same type, yet it is worth noting that 82\% of the MWE types in the corpus are represented by a singleton instance. Our arc count heuristic can identify issues with singletons, but its scope is fairly limited. We cannot possibly identify missing annotations for types that were not annotated at least once. We might also miss certain kinds of systematic annotation errors, for instance those mentioned in \citet{de2015studying}, though that work focused on the use of \mwetype{mwe} dependency labels which are barely used in the EWT, one of the reasons a resource like STREUSLE is so useful.
 
-Our experiments with the AMALGr tool show that our fixes result in a major improvement in MWE identification. One particularly striking result is the fact that the errors identified in the annotation since its original release account for about a quarter of all error (as measured by F-score) in the original model trained on it. This error may affect relative comparisons between systems, and we should be skeptical of results previously drawn based on relatively small differences in MWE identification in earlier versions of the corpus \citetp{Qu+:2015a}. This amount of error is also unacceptable simply in terms of the obfuscation relative to the degree of absolute progress on the task. Beyond this specific effort, we believe, for annotation efforts in general and for MWEs in particular, we should move beyond a singular focus on achieving sufficient annotator agreement in the initial annotation --- the agreement in the original CWME was impressively high --- and instead develop protocols for semi-automated, type-level inconsistency detection as a default step before any annotation is released. In this work, we have shown how bringing in other kinds of annotation done over the same corpus can facilitate such rigorous error correction, as part of the harmonization process.
+Our experiments with the AMALGr tool show that our fixes result in a major improvement in MWE identification. One particularly striking result is the fact that the errors identified in the annotation since its original release account for about a quarter of all error (as measured by F-score) in the original model trained on it. This error may affect relative comparisons between systems, and we should be skeptical of results previously drawn based on relatively small differences in MWE identification in earlier versions of the corpus \citet{Qu+:2015a}. This amount of error is also unacceptable simply in terms of the obfuscation relative to the degree of absolute progress on the task. Beyond this specific effort, we believe, for annotation efforts in general and for MWEs in particular, we should move beyond a singular focus on achieving sufficient annotator agreement in the initial annotation --- the agreement in the original CWME was impressively high --- and instead develop protocols for semi-automated, type-level inconsistency detection as a default step before any annotation is released. In this work, we have shown how bringing in other kinds of annotation done over the same corpus can facilitate such rigorous error correction, as part of the harmonization process.
 
 
 \section{Conclusion}
