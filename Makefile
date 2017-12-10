@@ -17,7 +17,7 @@ main.aux: $(SOURCE)
 	xelatex -no-pdf main 
 
 #create only the book
-main.bbl:  $(SOURCE) localbibliography.bib  
+main.bbl:  $(SOURCE) eacl2017.bib  
 	xelatex -no-pdf main 
 	biber   main 
 
@@ -52,13 +52,13 @@ googlebooks_interior.pdf: complete
 	pdftk main.pdf cat 1 output googlebooks_frontcover.pdf 
 
 openreview: openreview.pdf
-	
+
 
 openreview.pdf: main.pdf
 	pdftk main.pdf multistamp orstamp.pdf output openreview.pdf 
 
 proofreading: proofreading.pdf
-	
+
 paperhive: 
 	git branch gh-pages
 	git checkout gh-pages
@@ -68,7 +68,7 @@ paperhive:
 	git checkout master 
 	echo "langsci.github.io/BOOKID"
 	firefox https://paperhive.org/documents/new
-	
+
 proofreading.pdf: main.pdf
 	pdftk main.pdf multistamp prstamp.pdf output proofreading.pdf 
 
@@ -77,16 +77,16 @@ blurb: blurb.html blurb.tex biosketch.tex biosketch.html
 
 blurb.tex: blurb.md
 	pandoc -f markdown -t latex blurb.md>blurb.tex
-	
+
 blurb.html: blurb.md
 	pandoc -f markdown -t html blurb.md>blurb.html
-	
+
 biosketch.tex: blurb.md
 	pandoc -f markdown -t latex biosketch.md>biosketch.tex
-	
+
 biosketch.html: blurb.md
 	pandoc -f markdown -t html biosketch.md>biosketch.html
-	
+
 #housekeeping	
 clean:
 	rm -f *.bak *~ *.backup *.tmp \
