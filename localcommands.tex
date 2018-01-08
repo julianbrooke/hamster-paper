@@ -8,3 +8,20 @@
     {\iffieldundef{usera}{}{\thefield{usera}\actualoperator}\mkbibindexname{#2}{#3}{#4}{#5}}}
 
 % \newcommand{\noop}[1]{}
+
+\newcommand{\lex}[1]{\textit{#1}\xspace}
+
+\newcommand{\ngram}[1][]{$n$-gram{#1}\xspace}
+
+\newcommand{\mwetype}[1]{\texttt{#1}\xspace}
+\newcommand{\strongish}{\mwetype{strong}}
+\newcommand{\weak}{\mwetype{weak}}
+\newcommand{\hard}{\mwetype{hard}}
+\newcommand{\mixed}{\mwetype{mixed}}
+
+\newcommand{\gap}{$*$\xspace}
+\newcommand{\zp}{\phantom{0}}
+
+\newcommand{\figureref}[1]{Figure~\ref{#1}\xspace}
+\newcommand{\tableref}[1]{Table~\ref{#1}\xspace}
+\newcommand{\sectionref}[1]{Section~\ref{#1}\xspace}

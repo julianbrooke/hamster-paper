@@ -1,46 +1,14 @@
 \documentclass[output=paper
 ,modfonts
 ,nonflat]{langsci/langscibook} 
-\bibliography{eacl2017} 
+\bibliography{mwe2017bib3} 
 \input{localpackages.tex}
 \input{localhyphenation.tex}
 \input{localcommands.tex} 
-\usepackage{url}
-\usepackage{latexsym}
-\usepackage{tikz-dependency}
-\usepackage{color}
-\usepackage{newfloat}
-\usepackage{lipsum,adjustbox}
-\usepackage{multirow}% http://ctan.org/pkg/multirow
-\usepackage{hhline}% http://ctan.org/pkg/hhline
-\usepackage{graphicx}
-\usepackage{paralist}
-\usepackage{xspace}
-\usepackage{caption}
-\usepackage{booktabs}
 
-\newcommand\BibTeX{B{\sc ib}\TeX}
-
-\newcommand{\lex}[1]{\textit{#1}\xspace}
-
-\newcommand{\ngram}[1][]{$n$-gram{#1}\xspace}
-
-\newcommand{\mwetype}[1]{\texttt{#1}\xspace}
-\newcommand{\strongish}{\mwetype{strong}}
-\newcommand{\weak}{\mwetype{weak}}
-\newcommand{\hard}{\mwetype{hard}}
-\newcommand{\mixed}{\mwetype{mixed}}
-
-\newcommand{\gap}{$*$\xspace}
-\newcommand{\zp}{\phantom{0}}
-
-\newcommand{\figureref}[1]{Figure~\ref{#1}\xspace}
-\newcommand{\tableref}[1]{Table~\ref{#1}\xspace}
-\newcommand{\sectionref}[1]{Section~\ref{#1}\xspace}
 
 %\newcommand{\citep[1]}{\citepp{#1}}
 %\newcommand{\citet[1]}{\citepp{#1}}
-\hyphenation{STREU-SLE}
 
 
 
@@ -66,7 +34,7 @@ This paper presents a methodology for identifying and resolving various kinds of
 
 \section{Introduction}
 
-The availability of gold-standard annotations is important for the training and evaluation of a wide variety of NLP tasks, including the evaluation of dependency parsers \citep{Buchholz:2006:CST:1596276.1596305}. In recent years, there has been a focus on multi-annotation of a single corpus, such as joint syntactic, semantic role, named entity, coreference and word sense annotation in Ontonotes \citep{Hovy+:2006} or constituency, semantic role, discourse, opinion, temporal, event and coreference (among others) annotation of the Manually Annotated Sub-Corpus of the ANC \citep{Ide+:2010}. As part of this, there has been an increased focus on harmonizing and merging existing annotated data sets as a means of extending the scope of reference corpora \citep{Ide:2007:GGF:1642059.1642060,Declerk08,SimiMB15}.  This effort sometimes presents an opportunity to address conflicts among annotations, a worthwhile endeavour since even a small number of errors in a gold-standard syntactic annotation can, for example, result in significant changes in downstream applications \citep{habash2007determining}. This paper presents the results of a harmonization effort for the overlapping STREUSLE annotation \citep{Schneider14} of multiword expressions (``MWEs'': \citet{Baldwin10}) and dependency parse structure in the English Web Treebank (``EWT'': \citet{EWT}), with the long-term goal of building reliable resources for joint MWE/syntactic parsing \citep{Constant16}.
+The availability of gold-standard annotations is important for the training and evaluation of a wide variety of NLP tasks, including the evaluation of dependency parsers \citep{Buchholz:2006:CST:1596276.1596305}. In recent years, there has been a focus on multi-annotation of a single corpus, such as joint syntactic, semantic role, named entity, coreference and word sense annotation in Ontonotes \citep{Hovy+:2006} or constituency, semantic role, discourse, opinion, temporal, event and coreference (among others) annotation of the Manually Annotated Sub-Corpus of the ANC \citep{Ide+:2010}. As part of this, there has been an increased focus on harmonizing and merging existing annotated data sets as a means of extending the scope of reference corpora \citep{Ide:2007:GGF:1642059.1642060,Declerk08,SimiMB15}.  This effort sometimes presents an opportunity to address conflicts among annotations, a worthwhile endeavour since even a small number of errors in a gold-standard syntactic annotation can, for example, result in significant changes in downstream applications \citep{habash2007determining}. This paper presents the results of a harmonization effort for the overlapping STREUSLE annotation \citep{schneider2014} of multiword expressions (``MWEs'': \citet{baldwin2010multiword}) and dependency parse structure in the English Web Treebank (``EWT'': \citet{EWT}), with the long-term goal of building reliable resources for joint MWE/syntactic parsing \citep{constant-nivre:acl:2016}.
 
 As part of merging these two sets of annotations, we use analysis of cross-annotation and type-level consistency to identify instances of potential annotation inconsistency, with an eye to improving the quality of the component and combined annotations. It is important to point out that our approach to identifying and handling inconsistencies does not involve re-annotating the corpus; instead we act as arbitrators, resolving inconsistency in only those cases where human intervention is necessary. Our three methods for identifying potentially problematic annotations are:
 \begin{compactitem}
@@ -81,17 +49,18 @@ The first of these is specific to this harmonization process, and as far as we a
 \section{Related Work}
 \label{sec:relwork}
 
-Our long-term goal is in building reliable resources for joint MWE/syntactic parsing. Explicit modelling of MWEs has been shown to improve parser accuracy \citep{Nivre04,Seretan:Wehrli:2006,Finkel:2009:JPN:1620754.1620802,Korkontzelos:2010:RME:1857999.1858088,Green:2013:PMI:2464100.2464109,Vincze13,Wehrli:2010,Candito14,Constant16}. Treatment of MWEs has typically involved parsing MWEs as single lexical units \citep{Nivre04,Eryigit:2011:MES:2206359.2206365,Fotopoulou14}, however this flattened, ``words with spaces'' \citep{Sag02} approach is inflexible in its coverage of MWEs where components have some level of flexibility.
+Our long-term goal is in building reliable resources for joint MWE/syntactic parsing. Explicit modelling of MWEs has been shown to improve parser accuracy \citep{nivre04acl,Seretan:Wehrli:2006,Finkeletal09,Korkontzelos:2010:RME:1857999.1858088,Green:2013:PMI:2464100.2464109,hulvc,Wehrli:2010,candito-constant:acl:2014,constant-nivre:acl:2016}. Treatment of MWEs has typically involved parsing MWEs as single lexical units \citep{nivre04acl,Eryigit:2011:MES:2206359.2206365,Fotopoulou14}, however this flattened, ``words with spaces'' \citep{Sag2002a} approach is inflexible in its coverage of MWEs where components have some level of flexibility.
 
-The English Web Treebank \citep{EWT} represents a gold-standard annotation effort over informal web text. The original syntactic constituency annotation of the corpus was based on hand-correcting the output of the Stanford Parser \citep{Manning+:2014}; for our purposes we have converted this into a dependency parse using the Stanford Typed Dependency converter \citep{StanfordDep}. We considered the use of the Universal Dependencies representation \citep{nivre2016universal}, however we noted that several aspects of that annotation (in particular the treatment of all prepositions as case markers dependent on their noun) make it inappropriate for joint MWE/syntactic parsing since it results in large numbers of MWEs that are non-contiguous in their syntactic structure (despite being contiguous at the token-level).\footnote{An example of this would be a phrase such as \lex{think of home}, where we consider \lex{think of} to be an MWE, but the Universal Dependencies framework would treat \lex{of} as a syntactic dependent of \lex{home}, not \lex{think}.} As such, the Stanford Typed Dependencies are the representation which has the greatest currency for joint MWE/syntactic parsing work \citep{Constant16}. 
+The English Web Treebank \citep{EWT} represents a gold-standard annotation effort over informal web text. The original syntactic constituency annotation of the corpus was based on hand-correcting the output of the Stanford Parser \citep{Manning+:2014}; for our purposes we have converted this into a dependency parse using the Stanford Typed Dependency converter \citep{StanfordDep}. We considered the use of the Universal Dependencies representation \citep{univdep}, however we noted that several aspects of that annotation (in particular the treatment of all prepositions as case markers dependent on their noun) make it inappropriate for joint MWE/syntactic parsing since it results in large numbers of MWEs that are non-contiguous in their syntactic structure (despite being contiguous at the token-level).\footnote{An example of this would be a phrase such as \lex{think of home}, where we consider \lex{think of} to be an MWE, but the Universal Dependencies framework would treat \lex{of} as a syntactic dependent of \lex{home}, not \lex{think}.} As such, the Stanford Typed Dependencies are the representation which has the greatest currency for joint MWE/syntactic parsing work \citep{constant-nivre:acl:2016}. 
 
-The STREUSLE corpus \citep{Schneider14} is based entirely on the Reviews subset of the EWT, and comprises 3,812 sentences representing 55,579 tokens. The annotation was completed by six linguists who were native English speakers. Every sentence was assessed by at least two annotators, which resulted in an average inter-annotator F1 agreement of 0.7. The idiosyncratic nature of MWEs lends itself to challenges associated with their interpretation, and this was readily acknowledged by those involved in the development of the STREUSLE corpus \citep{Hollenstein16}. Two important aspects of the MWE annotation are that it includes both contiguous and non-contiguous MWEs (e.g.\ \lex{check \gap out}), and that it supports both weak and strong annotation. With regards to the latter, a variety of cues are employed to determine associative strength. The primary factor relates to the degree in which the expression is semantically opaque and/or morphosyntactically idiosyncratic. An example of a strong MWE would be \lex{top notch}, as used in the sentence: \lex{We stayed at a top notch hotel.} The semantics of this expression are not immediately predictable from the meanings of \lex{top} and \lex{notch}. On the other hand, the expression \lex{highly recommend} is considered to be a weak expression as it is largely compositional --- one can \lex{highly recommend a product} --- as indicated by the presence of alternatives such as \lex{greatly recommend} which are also acceptable though less idiomatic. A total of 3,626 MWE instances were identified in STREUSLE, across 2,334 MWE types.
+The STREUSLE corpus \citep{schneider2014} is based entirely on the Reviews subset of the EWT, and comprises 3,812 sentences representing 55,579 tokens. The annotation was completed by six linguists who were native English speakers. Every sentence was assessed by at least two annotators, which resulted in an average inter-annotator F1 agreement of 0.7. The idiosyncratic nature of MWEs lends itself to challenges associated with their interpretation, and this was readily acknowledged by those involved in the development of the STREUSLE corpus \citep{Hollenstein16}. Two important aspects of the MWE annotation are that it includes both contiguous and non-contiguous MWEs (e.g.\ \lex{check \gap out}), and that it supports both weak and strong annotation. With regards to the latter, a variety of cues are employed to determine associative strength. The primary factor relates to the degree in which the expression is semantically opaque and/or morphosyntactically idiosyncratic. An example of a strong MWE would be \lex{top notch}, as used in the sentence: \lex{We stayed at a top notch hotel.} The semantics of this expression are not immediately predictable from the meanings of \lex{top} and \lex{notch}. On the other hand, the expression \lex{highly recommend} is considered to be a weak expression as it is largely compositional --- one can \lex{highly recommend a product} --- as indicated by the presence of alternatives such as \lex{greatly recommend} which are also acceptable though less idiomatic. A total of 3,626 MWE instances were identified in STREUSLE, across 2,334 MWE types.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{figure*}[t]
 \begin{center}
-\begin{adjustbox}{width=.8\textwidth}
+\resizebox{.8\textwidth}{!}{
+%\begin{adjustbox}{width=.8\textwidth}
     \begin{dependency}[edge style={black!60!black,thick},
         label style={thick}, scale=1.2]
         \centering
@@ -110,8 +79,8 @@ The STREUSLE corpus \citep{Schneider14} is based entirely on the Reviews subset 
         \depedge{8}{9}{cc}
         \depedge{8}{10}{conj}
         \wordgroup{1}{1}{2}{a0}
-    \end{dependency}
-\end{adjustbox}
+    \end{dependency}}
+%\end{adjustbox}
 \end{center}
 \caption{An example where the arc count heuristic is breached. \lex{Deep tissue} has been labeled in the sentence here as an MWE in STREUSLE. \lex{Deep} and \lex{tissue} act as modifiers to \lex{massage}, a term that has not been included as part of the MWE.}
 \label{fig:arc-ex}
@@ -119,7 +88,7 @@ The STREUSLE corpus \citep{Schneider14} is based entirely on the Reviews subset 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Other MWE-aware dependency treebanks include the various UD treebanks \citep{nivre2016universal}, the Prague Dependency Treebank \citep{bejvcek2013prague}, the Redwoods Treebank \citep{Oepen+:2002}, and others \citep{Nivre04,Eryigit:2011:MES:2206359.2206365,Candito14}. The representation of MWEs, and the scope of types covered by these treebanks, can vary significantly. For example, the internal syntactic structure may be flattened \citep{Nivre04}, or in the case of \citet{Candito14}, allow for distinctions in the granularity of syntactic representation for regular vs.\ irregular MWE types. 
+Other MWE-aware dependency treebanks include the various UD treebanks \citep{univdep}, the Prague Dependency Treebank \citep{bejvcek2013prague}, the Redwoods Treebank \citep{Oepen+:2002}, and others \citep{nivre04acl,Eryigit:2011:MES:2206359.2206365,candito-constant:acl:2014} representation of MWEs, and the scope of types covered by these treebanks, can vary significantly. For example, the internal syntactic structure may be flattened \citep{nivre04acl}, or in the case of \citet{candito-constant:acl:2014}, allow for distinctions in the granularity of syntactic representation for regular vs.\ irregular MWE types. 
 
 The identification of inconsistencies in annotation requires comparisons to be made between similar instances that are labeled differently. \citet{boyd-et-al:07a} employed an alignment-based approach to assess differences in the annotation of \ngram word sequences in order to establish the likelihood of error occurrence.  Other work in the syntactic inconsistency detection domain includes those related to POS tagging \citep{loftsson2009correcting,Eskin:2000:DEW:974305.974325,ma2001line} and parse structure \citep{ule2004unexpected,kato2010correcting}. \citet{Dickinson03} outline various approaches for detecting inconsistencies in parse structure within treebanks. 
 
